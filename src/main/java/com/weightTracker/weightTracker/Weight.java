@@ -14,6 +14,7 @@ public class Weight {
     private double amountWeighed;
 
     public Weight(String id, LocalDate localDate, double amountWeighed) {
+        super();
         this.id = id;
         this.localDate = localDate;
         this.amountWeighed = amountWeighed;

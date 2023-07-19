@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
 
@@ -24,19 +25,70 @@ public class CommandLineVersion implements CommandLineRunner {
         System.out.println("The current date is: " + currentDate);
         // here you can handle command line arguments and interact with the user
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Please enter your weight: ");
-        String in = reader.readLine();
-        if (in != null && !in.isEmpty()) {
+
+        boolean appActive = true;
+
+        while (appActive) {
+            boolean weightSetForCurrentDate = checkIfWeightSet(currentDate);
+            System.out.println("Debug: weightSetForCurrentDate = " + weightSetForCurrentDate);
+            System.out.println("Welcome!");
+            System.out.println("1) Enter new weight");
+            System.out.println("2) View data");
+            System.out.println("3) Exit");
+
             try {
-                double weight = Double.parseDouble(in);
-                weightRepository.save(new Weight("D" + currentDate, currentDate, weight));
-            } catch (NullPointerException e) {
-                System.out.println("bad input!");
+                String in = reader.readLine();
+
+                if (in != null && !in.isEmpty()) {
+
+                    int chosenOption = Integer.parseInt(in);
+
+                    if (chosenOption == 1) {
+                        if (!weightSetForCurrentDate) {
+                            System.out.println("Please enter your weight: ");
+                            in = reader.readLine();
+                            try {
+                                double weight = Double.parseDouble(in);
+                                weightRepository.save(new Weight("D" + currentDate, currentDate, weight));
+                                System.out.println("weight: " + weight + " entered on date: " + currentDate);
+                                System.out.println("Goodbye");
+                                appActive = false;
+                            } catch (NumberFormatException e) {
+                                System.out.println("bad input!");
+                                System.out.println("Please enter your weight: ");
+                            } catch (NullPointerException e) {
+                                new NullPointerException();
+                            }
+                        } else {
+                            System.out.println("Weight already set for today!");
+                            // TODO: override option here
+                        }
+                    } else if (chosenOption == 2) {
+                        // show the data here
+                        System.out.println("data: ");
+                    } else if (chosenOption == 3) {
+                        appActive = false;
+                    }
+                } else {
+                    System.out.println("No weight entered, please try again.");
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a number from the list below: ");
+                System.out.println("1) Enter new weight");
+                System.out.println("2) View data");
+                System.out.println("3) Exit");
             }
-        } else {
-            System.out.println("No weight entered, please try again.");
+
         }
 
+        if (!appActive) System.exit(0);
+
+    }
+
+    private boolean checkIfWeightSet(LocalDate currentDate) {
+        return weightRepository.existsByLocalDate(currentDate);
     }
 
     public static void main(String[] args) {

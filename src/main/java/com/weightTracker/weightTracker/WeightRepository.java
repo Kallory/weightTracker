@@ -5,16 +5,15 @@ import org.springframework.data.mongodb.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
-public interface WeightRepository extends MongoRepository<Weight, LocalDate> {
-
-    @Query("{date:'?0'}")
-    Weight findWeightByDate(LocalDate date);
-
-    @Query(value="{weight:{ $gte: '?0' }}", fields="{'date' : 1, 'weight' : 1}")
-    List<Weight> findAllWithWeightGreaterThanOrEqual(Double weight);
-
-    public long count();
-
+public interface WeightRepository extends MongoRepository<Weight, String> {
+    Optional<Weight> findWeightByLocalDate(LocalDate localDate);
+    Optional<Weight> findTopByOrderByLocalDateAsc();
+    List<Weight> findAllByAmountWeighedGreaterThanEqual(Double weight);
+    long count();
+    boolean existsByLocalDate(LocalDate localDate);
 }
+
+
 
