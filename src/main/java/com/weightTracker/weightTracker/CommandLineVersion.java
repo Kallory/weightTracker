@@ -48,10 +48,7 @@ public class CommandLineVersion implements CommandLineRunner {
                             System.out.println("Please enter your weight: ");
                             in = reader.readLine();
                             try {
-                                double weight = Double.parseDouble(in);
-                                weightRepository.save(new Weight("D" + currentDate, currentDate, weight));
-                                System.out.println("weight: " + weight + " entered on date: " + currentDate);
-                                System.out.println("Goodbye");
+                                inputWeight(currentDate, in);
                                 appActive = false;
                             } catch (NumberFormatException e) {
                                 System.out.println("bad input!");
@@ -61,6 +58,8 @@ public class CommandLineVersion implements CommandLineRunner {
                             }
                         } else {
                             System.out.println("Weight already set for today!");
+                            System.out.println("Would you like to override?");
+                            System.out.println("(Y)es (N)o");
                             // TODO: override option here
                         }
                     } else if (chosenOption == 2) {
@@ -85,6 +84,13 @@ public class CommandLineVersion implements CommandLineRunner {
 
         if (!appActive) System.exit(0);
 
+    }
+
+    private void inputWeight(LocalDate currentDate, String in) {
+        double weight = Double.parseDouble(in);
+        weightRepository.save(new Weight("D" + currentDate, currentDate, weight));
+        System.out.println("weight: " + weight + " entered on date: " + currentDate);
+        System.out.println("Goodbye");
     }
 
     private boolean checkIfWeightSet(LocalDate currentDate) {
