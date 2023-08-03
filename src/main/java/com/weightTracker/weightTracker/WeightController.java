@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "127.0.0.1:8080")
 @RestController
 @RequestMapping("/main")
 public class WeightController {
