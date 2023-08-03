@@ -15,7 +15,7 @@ public class WeightEntryRequestController {
     public WeightEntryRequestController(WeightRepository weightRepository) {
         this.weightRepository = weightRepository;
     }
-    @PostMapping("/newWeight")
+    @PostMapping("/entry")
     public ResponseEntity<String> newWeightEntry(@RequestBody WeightRequest weightRequest) {
 
         return new ResponseEntity<>("Hey", HttpStatus.OK);
