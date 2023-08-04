@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "127.0.0.1:8080")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/main")
 public class WeightEntryRequestController {
@@ -17,7 +17,7 @@ public class WeightEntryRequestController {
     }
     @PostMapping("/entry")
     public ResponseEntity<String> newWeightEntry(@RequestBody WeightRequest weightRequest) {
-
+        System.out.println(weightRequest.getWeightAmount());
         return new ResponseEntity<>("Hey", HttpStatus.OK);
     }
 }

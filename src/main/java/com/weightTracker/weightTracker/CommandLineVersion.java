@@ -26,7 +26,7 @@ public class CommandLineVersion implements CommandLineRunner {
         // here you can handle command line arguments and interact with the user
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        boolean appActive = true;
+        boolean appActive = false;
 
         while (appActive) {
             boolean weightSetForCurrentDate = checkIfWeightSet(currentDate);
@@ -82,7 +82,7 @@ public class CommandLineVersion implements CommandLineRunner {
 
         }
 
-        if (!appActive) System.exit(0);
+       // if (!appActive) System.exit(0);
 
     }
 
